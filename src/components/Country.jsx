@@ -1,5 +1,5 @@
-
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { Box, CardContent, Divider, Card } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Grid } from '@mui/material';
@@ -8,24 +8,28 @@ import { Button } from '@mui/material';
 import React, { Component } from 'react';
 import '../App.css';
 
-const Item = styled(Paper)(({ theme }) => ({
-        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-        ...theme.typography.body2,
-        padding: theme.spacing(1),
-        textAlign: 'center',
-    }));  
+// const Item = styled(Paper)(({ theme }) => ({
+//         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+//         ...theme.typography.body2,
+//         padding: theme.spacing(1),
+//         textAlign: 'center',
+//     }));  
 
 
 class Country extends Component {
     state = { 
-        name: 'United States',
-        gold: 0
+        name: this.props.country.name,
+        gold: this.props.country.goldMedalCount
     } 
     
     // updates gold stae property (1 click equals 1 gold)
     handleIncrement = () =>{
         console.log(this.state.gold)
-        this.setState({ gold: this.state.gold + 1});
+        this.setState({ gold: this.state.gold + 1 });
+    }
+
+    handleDecrament = () =>{
+        this.setState({ gold: this.state.gold -1 });
     }
 
     render() { 
@@ -46,7 +50,8 @@ class Country extends Component {
                             </CardContent>
 
                             <div>
-                                <Button className='funkyBtn' onClick={ this.handleIncrement } variant="outlined"><ArrowUpwardIcon /></Button>
+                                <Button className='funkyBtn' onClick={ this.handleIncrement } variant="outlined"><ArrowUpwardIcon /></Button> 
+                                <Button className='funkyBtn' onClick={ this.handleDecrament } variant='outlined'><ArrowDownwardIcon /></Button>
                             </div>
                         </Card>
                         
