@@ -1,51 +1,49 @@
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { Box, CardContent, Divider, Card } from '@mui/material';
 import { Grid } from '@mui/material';
-import { Button } from '@mui/material';
 import React, { Component } from 'react';
+import Medal from './Medal';
 import '../App.css';
 
 class Country extends Component {
-    state = { 
-        name: this.props.country.name,
-        gold: this.props.country.goldMedalCount
-    } 
-    
-    // updates gold stae property (1 click equals 1 gold)
-    handleIncrement = () =>{
-        console.log(this.state.gold)
-        this.setState({ gold: this.state.gold + 1 });
-    }
-
-    handleDecrament = () =>{
-        this.setState({ gold: this.state.gold -1 });
+    countryMedalTotal (country, medals) {
+        let total = 0;
+        medals.forEach(m => {
+            total += country[m.name];
+        });
+        return total;
     }
 
     render() { 
+        const { country, medals, handleIncrement, handleDecrament } = this.props;
         return (
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container margin="3px" justify="center" alignItems="center" style={{ minHeight: '10vh' }} columnSpacing={{ xs: 3, sm: 2, md: 3 }}>
                     <Grid item xs={4}></Grid>
-                    <Grid item xs={4}>
-                        <Card sx={{ p: 1 }}>
-                            <div className='contentGrid'>
-                                {this.state.name}
-                            </div>
+                        <Grid item xs={4}>
+                            <Card sx={{ p: 1 }}>
+                                <div className='contentGrid'>
+                                    { country.name } { this.countryMedalTotal( country, medals )}
+                                </div>
+                                
+                                <Divider sx={{ my: 1 }} />
+
+                                <CardContent sx={{ my: .015 }}>
+                                    { medals.map( medal => 
+                                        <Medal 
+                                            key={ medal.id } 
+                                            country={ country } 
+                                            medal={ medal } 
+                                            handleIncrement={ handleIncrement } 
+                                            handleDecrament={ handleDecrament } 
+                                        />)}
+                                </CardContent>
+
+                                <div>
+                                    
+                                </div>
+                            </Card>
                             
-                            <Divider sx={{ my: 1 }} />
-
-                            <CardContent sx={{ my: .015 }}>
-                                Gold Medals: {this.state.gold}
-                            </CardContent>
-
-                            <div>
-                                <Button className='funkyBtn' onClick={ this.handleIncrement } variant="outlined"><ArrowUpwardIcon /></Button> 
-                                <Button className='funkyBtn' onClick={ this.handleDecrament } variant='outlined'><ArrowDownwardIcon /></Button>
-                            </div>
-                        </Card>
-                        
-                    </Grid>
+                        </Grid>
                     <Grid item xs={4}></Grid>
                 </Grid>
             </Box>
