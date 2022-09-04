@@ -1,6 +1,16 @@
 import './App.css';
 import React, { Component } from 'react';
 import Country from './components/Country';
+import NewCountry from './components/NewCountry';
+import { Container } from '@mui/system';
+import { Grid } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const darkTheme = createTheme ({
+  palette: {
+    mode: 'dark',
+  },
+})
 
 class App extends Component {
   state = {
@@ -38,22 +48,49 @@ class App extends Component {
     return total;
   }
 
+  addCountry = (name) => {
+    const {countries} = this.state;
+    const id = countries.length === 0 ? 1 : Math.max(...countries.map(country => country.id)) + 1;
+    const countriesMutable = [...countries].concat({id: id, name: name, gold: 0, silver: 0, bronze: 0});
+
+    this.setState({countries: countriesMutable});
+  }
+
+  deleteCountry = (countryId) => {
+    const {countries} = this.state;
+    const countriesMutable = [...countries].filter(x => x.id !== countryId);
+    
+    this.setState({countries: countriesMutable})
+  }
+
   render() {
     return (
-      <div>
-        <header className='App-header'>
-          PogOlympics { this.totalMedals() }
-        </header>
-        
-        { this.state.countries.map(country => 
-        <Country
-          country={ country }
-          key={ country.id }
-          medals={ this.state.medals }
-          handleIncrement={ this.handleIncrement }
-          handleDecrament={ this.handleDecrament }
-        />) }
-      </div>
+      <React.Fragment>
+        <ThemeProvider theme={darkTheme}>
+        <div>
+          <header className='App-header'>
+            PogOlympics { this.totalMedals() }
+          </header>
+        </div>
+
+          <Container fixed={true}>
+            <Grid justifyContent="center" container>
+              { this.state.countries.map(country => 
+                <Grid>
+                    <Country
+                      country={ country }
+                      key={ country.id }
+                      medals={ this.state.medals }
+                      handleIncrement={ this.handleIncrement }
+                      handleDecrament={ this.handleDecrament }
+                      deleteCountry={ this.deleteCountry }/>
+                </Grid>
+                ) }
+            </Grid>
+            <NewCountry onAdd={this.addCountry} />
+          </Container>
+        </ThemeProvider>
+      </React.Fragment>
     )
   }
 }
