@@ -1,98 +1,90 @@
-import './App.css';
-import React, { Component } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Country from './components/Country';
 import NewCountry from './components/NewCountry';
 import { Container } from '@mui/system';
 import { Grid } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import './App.css';
 
-const darkTheme = createTheme ({
-  palette: {
-    mode: 'dark',
-  },
-})
+const App = () => {
+  const [countries, setCountries] = useState([]);
+  const medals = useRef([
+    { id: 1, name: 'gold' },
+    { id: 2, name: 'silver' },
+    { id: 3, name: 'bronze' },
+  ]);
 
-class App extends Component {
-  state = {
-    countries: [
+  useEffect(() => {
+    let fetchCountries = [
       { id: 1, name: 'United States', gold: 3, silver: 2, bronze: 1 },
       { id: 2, name: 'Switzerland', gold: 2, silver: 2, bronze: 1  },
-      { id: 3, name: 'Germany', gold: 0, silver: 2, bronze: 1  }
-    ],
-    medals: [
-      { id: 1, name: 'gold' },
-      { id: 2, name: 'silver' },
-      { id: 3, name: 'bronze' }
+      { id: 3, name: 'Germany', gold: 0, silver: 2, bronze: 1  },
     ]
-  }
 
-  handleIncrement = (countryId, medalName) => {
-    const countriesMutable = [...this.state.countries];
+    setCountries(fetchCountries);
+  }, []);
+
+  const handleIncrement = (countryId, medalName) => {
+    const countriesMutable = [...countries];
     const idx = countriesMutable.findIndex((i) => i.id === countryId);
     countriesMutable[idx][medalName] += 1;
-    this.setState({ countries: countriesMutable })
+    setCountries(countriesMutable);
   }
 
-  handleDecrament = (countryId, medalName) => {
-    const countriesMutable = [...this.state.countries];
+  const handleDecrament = (countryId, medalName) => {
+    const countriesMutable = [...countries];
     const idx = countriesMutable.findIndex((l) => l.id === countryId)
     countriesMutable[idx][medalName] -= 1;
-    this.setState({ countries: countriesMutable });
+    setCountries(countriesMutable);
   }
 
-  totalMedals() {
+  const totalMedals = () => {
     let total = 0;
-    this.state.medals.forEach(x => {
-      total += this.state.countries.reduce((o, t) => o + t[x.name], 0)
+    medals.current.forEach(x => {
+      total += countries.reduce((o, t) => o + t[x.name], 0)
     });
     return total;
   }
 
-  addCountry = (name) => {
-    const {countries} = this.state;
+  const addCountry = (name) => {
+  
     const id = countries.length === 0 ? 1 : Math.max(...countries.map(country => country.id)) + 1;
     const countriesMutable = [...countries].concat({id: id, name: name, gold: 0, silver: 0, bronze: 0});
 
-    this.setState({countries: countriesMutable});
+    setCountries(countriesMutable);
   }
 
-  deleteCountry = (countryId) => {
-    const {countries} = this.state;
+  const deleteCountry = (countryId) => {
     const countriesMutable = [...countries].filter(x => x.id !== countryId);
     
-    this.setState({countries: countriesMutable})
+    setCountries(countriesMutable);
   }
 
-  render() {
-    return (
-      <React.Fragment>
-        <ThemeProvider theme={darkTheme}>
+  return (
+    <React.Fragment>
         <div>
           <header className='App-header'>
-            PogOlympics { this.totalMedals() }
+            PogOlympics { totalMedals() }
           </header>
         </div>
 
           <Container fixed={true}>
             <Grid justifyContent="center" container>
-              { this.state.countries.map(country => 
+              { countries.map(country => 
                 <Grid>
                     <Country
                       country={ country }
                       key={ country.id }
-                      medals={ this.state.medals }
-                      handleIncrement={ this.handleIncrement }
-                      handleDecrament={ this.handleDecrament }
-                      deleteCountry={ this.deleteCountry }/>
+                      medals={ medals.current }
+                      handleIncrement={ handleIncrement }
+                      handleDecrament={ handleDecrament }
+                      deleteCountry={ deleteCountry }/>
                 </Grid>
                 ) }
             </Grid>
-            <NewCountry onAdd={this.addCountry} />
+            <NewCountry onAdd={addCountry} />
           </Container>
-        </ThemeProvider>
-      </React.Fragment>
-    )
-  }
+    </React.Fragment>
+  );
 }
 
 export default App;
