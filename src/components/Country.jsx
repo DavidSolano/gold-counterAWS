@@ -1,42 +1,34 @@
-import { Box, CardContent, Divider, Card } from '@mui/material';
-import { Button } from '@mui/material';
+import React from 'react';
 import Medal from './Medal';
-import '../App.css';
 
 const Country = (props) => {
-    const { country, medals, handleIncrement, handleDecrament, deleteCountry } = props;
+    const { country, medals, onIncrement, onDecrement, onDelete, onSave, onReset, canDelete, canPatch } = props;
 
-    const countryMedalTotal = (country, medals) => {
-        let total = 0;
-        medals.forEach(m => {
-            total += country[m.name];
-        });
-        return total;
+    const getMedalsTotal = (country, medals) => {
+        let sum = 0;
+        medals.forEach(medal => { sum += country[medal.name]; });
+        return sum;
     }
-
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <Card sx={{ x: 1 }}>
-                <div className='contentGrid'>
-                    {country.name} {countryMedalTotal(country, medals)}
-                </div>
-
-                <Divider sx={{ my: 1 }} />
-
-                <CardContent sx={{ my: .015 }}>
-                    {medals.map(medal =>
-                        <Medal
-                            key={medal.id}
-                            country={country}
-                            medal={medal}
-                            handleIncrement={handleIncrement}
-                            handleDecrament={handleDecrament}
-                        />)}
-
-                    <Button onClick={() => deleteCountry(country.id)}>Delete</Button>
-                </CardContent>
-            </Card>
-        </Box>
+        <div className="country">
+            <div className="name">
+                {country.name}
+                <span className="badge">
+                    {getMedalsTotal(country, medals)}
+                </span>
+            </div>
+            {medals.map(medal =>
+                <Medal
+                    key={medal.id}
+                    country={country}
+                    medal={medal}
+                    canPatch={canPatch}
+                    onIncrement={onIncrement}
+                    onDecrement={onDecrement} />
+            )}
+            {canDelete && <button onClick={() => onDelete(country.id)}>delete</button>}
+            <hr />
+        </div>
     );
 }
 

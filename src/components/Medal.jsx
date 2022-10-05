@@ -1,16 +1,18 @@
-import { Button } from '@mui/material';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import React from 'react';
 
 const Medal = (props) => {
-    const { medal, country, handleDecrament, handleIncrement } = props;
-
+    const { medal, country, onIncrement, onDecrement, canPatch } = props;
     return (
-        <div>
-            {medal.name} Medals:  {country[medal.name]}          <Button onClick={() => handleIncrement(country.id, medal.name)} variant="outlined"><ArrowUpwardIcon /></Button>
-            <Button disabled={country[medal.name] === 0} onClick={() => handleDecrament(country.id, medal.name)} variant="outlined"><ArrowDownwardIcon /></Button>
+        <div className="medals">
+            {medal.name} Medals: {country[medal.name]}
+            {canPatch &&
+                <React.Fragment>
+                    <button onClick={() => onIncrement(country.id, medal.name)}>+</button>
+                    <button disabled={country[medal.name] === 0} onClick={() => onDecrement(country.id, medal.name)}>-</button>
+                </React.Fragment>
+            }
         </div>
-    )
+    );
 }
 
-export default Medal
+export default Medal;

@@ -1,24 +1,17 @@
-import React, { } from 'react';
-import { Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import React from 'react';
 
 const NewCountry = (props) => {
     const { onAdd } = props;
-
-    const handleAddingCountry = () => {
-        const name = prompt('Enter Country Name ʕ •ᴥ•ʔ');
-
+    const handleClick = () => {
+        const name = prompt('Enter country name');
         if (name && name.trim().length > 0) {
-            onAdd(name)
+            onAdd(name);
         }
     }
-
     return (
-        <React.Fragment>
-            <div>
-                <Button onClick={handleAddingCountry}>Add New Country <AddIcon /></Button>
-            </div>
-        </React.Fragment>
+        <div className='newCountryButton'>
+            <button onClick={handleClick}>New Country</button>
+        </div>
     );
 }
 
