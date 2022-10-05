@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/gold-counterAWS/static/css/main.f01b765d.css",
-    "main.js": "/gold-counterAWS/static/js/main.ef1fb73f.js",
+    "main.css": "/gold-counterAWS/static/css/main.94dac919.css",
+    "main.js": "/gold-counterAWS/static/js/main.26fd482d.js",
     "static/js/787.2ea390c1.chunk.js": "/gold-counterAWS/static/js/787.2ea390c1.chunk.js",
     "index.html": "/gold-counterAWS/index.html",
-    "main.f01b765d.css.map": "/gold-counterAWS/static/css/main.f01b765d.css.map",
-    "main.ef1fb73f.js.map": "/gold-counterAWS/static/js/main.ef1fb73f.js.map",
+    "main.94dac919.css.map": "/gold-counterAWS/static/css/main.94dac919.css.map",
+    "main.26fd482d.js.map": "/gold-counterAWS/static/js/main.26fd482d.js.map",
     "787.2ea390c1.chunk.js.map": "/gold-counterAWS/static/js/787.2ea390c1.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f01b765d.css",
-    "static/js/main.ef1fb73f.js"
+    "static/css/main.94dac919.css",
+    "static/js/main.26fd482d.js"
   ]
 }
